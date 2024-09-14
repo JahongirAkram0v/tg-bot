@@ -16,7 +16,7 @@ public class MyBot extends TelegramWebhookBot {
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        return new SendMessage(update.getMessage().getChatId().toString(), update.getMessage().getText());
+        return new SendMessage(update.getMessage().getChatId().toString(), "bot : " + update.getMessage().getText());
     }
 
     @Override
