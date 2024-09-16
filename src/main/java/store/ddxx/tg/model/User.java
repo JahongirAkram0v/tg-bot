@@ -13,6 +13,7 @@ public class User {
 
     @Id
     private Long chatId;
+    private Long token = 0L;
     @Column(length = 20)
     private String name;
     @Column(length = 15)

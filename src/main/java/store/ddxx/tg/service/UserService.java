@@ -25,4 +25,10 @@ public class UserService {
                 user.getName() != null &&
                 user.getUserState() != null;
     }
+
+    public User findFirstByUserState() {return repo.findFirstByUserState(UserState.WAITING);}
+
+    public Long findCountUsers() {return repo.findCountUsers();}
+
+    public Long findTokenByUserId(Long chatId) {return repo.findTokenByUserId(chatId);}
 }

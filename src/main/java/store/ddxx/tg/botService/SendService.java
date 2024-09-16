@@ -1,11 +1,9 @@
 package store.ddxx.tg.botService;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class SendService {
@@ -15,19 +13,18 @@ public class SendService {
     private final String baseUrl = dotenv.get("BASE_URL");
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String sendMessageUrl = baseUrl + botToken + "/sendMessage";
 
     private void sendTextMessage(Long chatId, String text) {
 
-
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("chat_id", chatId);
-        requestBody.put("text", text);
-
-        restTemplate.postForObject(sendMessageUrl, requestBody, String.class);
+        String url = baseUrl + botToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
+        restTemplate.getForEntity(url, JsonNode.class);
     }
 
     public void botSendTextMessage(Long chatId, String text) {
         sendTextMessage(chatId, "\uD83E\uDD16:\t\n" + text);
+    }
+
+    public void activeUsersSendTextMessage(Long chatId, String text, String name) {
+        sendTextMessage(chatId, "\uD83D\uDC64:  " + name + "\t\n\n" + text);
     }
 }

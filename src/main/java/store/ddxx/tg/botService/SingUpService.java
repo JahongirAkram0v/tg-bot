@@ -7,6 +7,8 @@ import store.ddxx.tg.model.User;
 import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.service.UserService;
 
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class SingUpService {
@@ -34,13 +36,24 @@ public class SingUpService {
     }
 
     private void signUpForName(User user, String name) {
-        user.setName(name);
+        if (name.equals("/start")) return;
+        user.setName(fixName(name));
         signUpDone(user);
+    }
+
+    private String fixName(String name) {
+        return name
+                .chars()
+                .filter(Character::isLetter)
+                .mapToObj(c -> String.valueOf((char) c))
+                .limit(20)
+                .collect(Collectors.joining());
     }
 
     private void signUpDone(User user) {
         user.setUserState(UserState.ACTIVATE);
-        String text = "Subhatni boshlash uchun /chat ni bosing";
+        String text = "Subhatni boshlash uchun /chat ni bosing,\n" +
+                " yoki do'stlaringizni taklif qilish uchun /referral ni bosing.";
         send.botSendTextMessage(user.getChatId(), text);
     }
 }

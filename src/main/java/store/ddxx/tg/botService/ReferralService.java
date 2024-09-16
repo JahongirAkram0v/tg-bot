@@ -1,0 +1,35 @@
+package store.ddxx.tg.botService;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import store.ddxx.tg.model.User;
+import store.ddxx.tg.service.UserService;
+
+@Component
+@RequiredArgsConstructor
+public class ReferralService {
+
+    private final UserService userService;
+    private final SendService send;
+
+    public boolean isReferral(String referral) {
+        return referral.length() > 7
+                && referral.startsWith("/start")
+                && userService.findById(Long.parseLong(referral.substring(7))).getChatId() != null;
+    }
+
+    public void referral(String referral, Long chatId, User user) {
+        Long referralId = Long.parseLong(referral.substring(7));
+
+        User referralUser = userService.findById(referralId);
+        referralUser.setToken(referralUser.getToken() + 10);
+        userService.save(referralUser);
+
+        user.setChatId(chatId);
+        user.setToken(user.getToken() + 5);
+        userService.save(user);
+        send.botSendTextMessage(chatId, "Referral link orqali kirib 5 ta tokenni qolga kiritdingiz,\n" +
+                " umumiy tokenlaringiz soni bilish uchun /info ni bosing.");
+        send.botSendTextMessage(referralUser.getChatId(), "10 ta tokenni qolga kiritdingiz");
+    }
+}
