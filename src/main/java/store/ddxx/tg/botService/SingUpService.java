@@ -52,8 +52,7 @@ public class SingUpService {
 
     private void signUpDone(User user) {
         user.setUserState(UserState.ACTIVATE);
-        String text = "Subhatni boshlash uchun /chat ni bosing,\n" +
-                " yoki do'stlaringizni taklif qilish uchun /referral ni bosing.";
+        String text = "Subhatni boshlash uchun /chat ni bosing";
         send.botSendTextMessage(user.getChatId(), text);
     }
 }
