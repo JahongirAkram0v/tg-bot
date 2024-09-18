@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 import store.ddxx.tg.model.User;
 import store.ddxx.tg.model.UserState;
 
+import java.util.List;
+
 
 public interface UserRepo extends JpaRepository<User, Long> {
 
@@ -18,4 +20,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
             "FROM _user t " +
             "WHERE t.chatId = :chatId")
     Long findTokenByUserId(@Param("chatId") Long userId);
+
+    @Query("SELECT chatId FROM _user")
+    List<Long> findAllChatId();
 }

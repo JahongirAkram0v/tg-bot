@@ -28,7 +28,7 @@ public class SelectorService {
                 .build();
         activeChatUsersService.save(activeChatUsers);
 
-        send.botSendTextMessage(user.getChatId(), "Suhbatni boshlashingiz mumkin.");
+        send.controlReplyKeyboardMarkup(user.getChatId(), "Suhbatni boshlashingiz mumkin.");
         send.botSendTextMessage(waitingUser.getChatId(), "Suhbatni boshlashingiz mumkin.");
     }
 }

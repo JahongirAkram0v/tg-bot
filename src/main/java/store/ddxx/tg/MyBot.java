@@ -29,6 +29,7 @@ public class MyBot extends TelegramWebhookBot {
     private final SelectorService selectorService;
     private final ChatService chatService;
     private final ReferralService referralService;
+    private final AdminService adminService;
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
@@ -81,6 +82,10 @@ public class MyBot extends TelegramWebhookBot {
         ) {
             chatService.chatText(user, text);
             return null;
+        }
+
+        if (text != null && user.getUserState().equals(UserState.ADMIN) && !botCommands.isBotCommand(text)) {
+            adminService.sendTextAds(text);
         }
 
         return null;

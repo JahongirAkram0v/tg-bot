@@ -6,6 +6,8 @@ import store.ddxx.tg.model.User;
 import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.repository.UserRepo;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -31,4 +33,6 @@ public class UserService {
     public Long findCountUsers() {return repo.findCountUsers();}
 
     public Long findTokenByUserId(Long chatId) {return repo.findTokenByUserId(chatId);}
+
+    public List<Long> findAllChatId() {return repo.findAllChatId();}
 }

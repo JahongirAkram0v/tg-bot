@@ -11,8 +11,8 @@ public class BridgeService {
     private final SendService send;
 
     public void bridge(User user) {
-        send.botSendTextMessage(user.getChatId(),
+        send.chatReplyKeyboardMarkup(user.getChatId(),
                 "Yana bir bor salom " + user.getName()
-                + ".\nSuhbatni boshlamoqchi bo'lsangiz /chat ni bosing.");
+                + ".\nSuhbatni boshlamoqchi bo'lsangiz ⚡️ chat ni bosing.");
     }
 }

@@ -9,4 +9,5 @@ public enum UserState {
     WAITING,
     SELECTOR,
     CHAT,
+    ADMIN,
 }

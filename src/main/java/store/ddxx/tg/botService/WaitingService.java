@@ -11,6 +11,6 @@ public class WaitingService {
     private final SendService send;
 
     public void waiting(User user) {
-        send.botSendTextMessage(user.getChatId(), "Kutib turing. Suhbat boshlansa xabar beriladi");
+        send.controlReplyKeyboardMarkup(user.getChatId(), "Kutib turing. Suhbat boshlansa xabar beriladi");
     }
 }

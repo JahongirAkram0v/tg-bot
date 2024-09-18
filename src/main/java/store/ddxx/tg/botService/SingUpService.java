@@ -52,7 +52,6 @@ public class SingUpService {
 
     private void signUpDone(User user) {
         user.setUserState(UserState.ACTIVATE);
-        String text = "Subhatni boshlash uchun /chat ni bosing";
-        send.botSendTextMessage(user.getChatId(), text);
+        send.chatReplyKeyboardMarkup(user.getChatId(), "Subhatni boshlash uchun ⚡️ chat ni bosing");
     }
 }

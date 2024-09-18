@@ -1,9 +1,10 @@
 package store.ddxx.tg.botService;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.*;
 
 @Component
 public class SendService {
@@ -16,8 +17,13 @@ public class SendService {
 
     private void sendTextMessage(Long chatId, String text) {
 
-        String url = baseUrl + botToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
-        restTemplate.getForEntity(url, JsonNode.class);
+        String url = baseUrl + botToken + "/sendMessage";
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("chat_id", chatId);
+        requestBody.put("text", text);
+
+        restTemplate.postForObject(url, requestBody, String.class);
     }
 
     public void botSendTextMessage(Long chatId, String text) {
@@ -26,5 +32,58 @@ public class SendService {
 
     public void activeUsersSendTextMessage(Long chatId, String text, String name) {
         sendTextMessage(chatId, "\uD83D\uDC64:  " + name + "\t\n\n" + text);
+    }
+
+    public void adsTextMessage(Long chatId, String text) {
+        sendTextMessage(chatId, "#Reklama\n\n" + text);
+    }
+
+    public void chatReplyKeyboardMarkup(Long chatId, String text) {
+
+        String url = baseUrl + botToken + "/sendMessage";
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("chat_id", chatId);
+        requestBody.put("text", text);
+
+        Map<String, Object> keyboardButton = new HashMap<>();
+        keyboardButton.put("text", "⚡️ chat");
+
+        List<List<Map<String, Object>>> keyboard = new ArrayList<>();
+        keyboard.add(List.of(keyboardButton));
+
+        Map<String, Object> replyMarkup = new HashMap<>();
+        replyMarkup.put("keyboard", keyboard);
+        replyMarkup.put("resize_keyboard", true);
+
+        requestBody.put("reply_markup", replyMarkup);
+
+        restTemplate.postForObject(url, requestBody, String.class);
+    }
+
+    public void controlReplyKeyboardMarkup(Long chatId, String text) {
+
+        String url = baseUrl + botToken + "/sendMessage";
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("chat_id", chatId);
+        requestBody.put("text", text);
+
+        Map<String, Object> keyboardButton1 = new HashMap<>();
+        keyboardButton1.put("text", "\uD83D\uDED1 stop");
+
+        Map<String, Object> keyboardButton2 = new HashMap<>();
+        keyboardButton2.put("text", "➡️ next");
+
+        List<List<Map<String, Object>>> keyboard = new ArrayList<>();
+        keyboard.add(List.of(keyboardButton1, keyboardButton2));
+
+        Map<String, Object> replyMarkup = new HashMap<>();
+        replyMarkup.put("keyboard", keyboard);
+        replyMarkup.put("resize_keyboard", true);
+
+        requestBody.put("reply_markup", replyMarkup);
+
+        restTemplate.postForObject(url, requestBody, String.class);
     }
 }
