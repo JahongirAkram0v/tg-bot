@@ -80,7 +80,7 @@ public class BotCommandsService {
                 }
             }
             case "/admin" -> {
-                if (adminId.equals(user.getChatId().toString())) {
+                if (adminId.equals(user.getChatId().toString()) && user.getUserState().equals(UserState.ACTIVATE)) {
                     user.setUserState(UserState.ADMIN);
                 }
             }
