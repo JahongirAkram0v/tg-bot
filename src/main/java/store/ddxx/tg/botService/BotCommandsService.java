@@ -47,7 +47,7 @@ public class BotCommandsService {
             );
             case "/referral" -> send.botSendTextMessage(
                     user.getChatId(),
-                    "https://t.me/chat_wx_bot?start=" + user.getChatId()
+                    "https://t.me/suhbat_topar_bot?start=" + user.getChatId()
             );
             case "⚡️ chat" -> {
                 if (user.getUserState().equals(UserState.ACTIVATE) || user.getUserState().equals(UserState.START_CHAT)) {
