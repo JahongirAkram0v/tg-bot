@@ -3,6 +3,7 @@ package store.ddxx.tg.botService;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.*;
 
@@ -14,6 +15,14 @@ public class SendService {
     private final String baseUrl = dotenv.get("BASE_URL");
 
     private final RestTemplate restTemplate = new RestTemplate();
+
+    public void deleteMessage(Message message) {
+
+        String url = baseUrl + botToken + "/deleteMessage?chat_id=" + message.getChatId()
+                +"&message_id=" + message.getMessageId();
+
+        restTemplate.getForObject(url, String.class);
+    }
 
     private void sendTextMessage(Long chatId, String text) {
 
@@ -44,7 +53,7 @@ public class SendService {
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("chat_id", chatId);
-        requestBody.put("text", text);
+        requestBody.put("text", "\uD83E\uDD16:\t\n" + text);
 
         Map<String, Object> keyboardButton = new HashMap<>();
         keyboardButton.put("text", "⚡️ chat");
@@ -67,7 +76,7 @@ public class SendService {
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("chat_id", chatId);
-        requestBody.put("text", text);
+        requestBody.put("text", "\uD83E\uDD16:\t\n" + text);
 
         Map<String, Object> keyboardButton1 = new HashMap<>();
         keyboardButton1.put("text", "\uD83D\uDED1 stop");

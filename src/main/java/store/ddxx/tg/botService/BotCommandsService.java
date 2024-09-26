@@ -19,11 +19,11 @@ public class BotCommandsService {
             "/info", "/referral", "⚡️ chat", "➡️ next", "\uD83D\uDED1 stop", "/admin", "/exit");
     private final Dotenv dotenv = Dotenv.load();
     private final String adminId = dotenv.get("ADMIN_ID");
+    private final String username = dotenv.get("TELEGRAM_BOT_USERNAME");
 
     private final SendService send;
     private final UserService userService;
     private final ActiveChatUsersService activeChatUsersService;
-    private final StartChatService startChatService;
 
 
     public boolean isBotCommand(String message) {
@@ -45,39 +45,8 @@ public class BotCommandsService {
                             , 2 * activeChatUsersService.findCountActiveChatUsers()
                             , userService.findTokenByUserId(user.getChatId()))
             );
-            case "/referral" -> send.botSendTextMessage(
-                    user.getChatId(),
-                    "https://t.me/suhbat_topar_bot?start=" + user.getChatId()
-            );
-            case "⚡️ chat" -> {
-                if (user.getUserState().equals(UserState.ACTIVATE) || user.getUserState().equals(UserState.START_CHAT)) {
-                    user.setUserState(UserState.START_CHAT);
-                }
-            }
-            case "➡️ next" -> {
-                if (user.getUserState().equals(UserState.CHAT)) {
-                    Long activeChatUsersId = activeChatUsersService.findConnectedUserId(user.getChatId());
-                    User waitingUser = userService.findById(activeChatUsersId);
-                    send.controlReplyKeyboardMarkup(activeChatUsersId, "Suhbat yakunlandi, ➡️ next ni bosing");
-                    user.setUserState(UserState.START_CHAT);
-                    waitingUser.setUserState(UserState.START_CHAT);
-                    activeChatUsersService.deleteByUserId1OrUserId2(user.getChatId());
-                }
-            }
-            case "\uD83D\uDED1 stop" -> {
-                if (user.getUserState().equals(UserState.CHAT)) {
-
-                    Long activeChatUsersId = activeChatUsersService.findConnectedUserId(user.getChatId());
-                    User waitingUser = userService.findById(activeChatUsersId);
-                    send.controlReplyKeyboardMarkup(activeChatUsersId, "Suhbat yakunlandi. ➡️ next ni bosing");
-                    user.setUserState(UserState.ACTIVATE);
-                    waitingUser.setUserState(UserState.START_CHAT);
-                    activeChatUsersService.deleteByUserId1OrUserId2(user.getChatId());
-
-                } else if (user.getUserState().equals(UserState.WAITING)) {
-                    startChatService.setChanger(!startChatService.isChanger());
-                    user.setUserState(UserState.ACTIVATE);
-                }
+            case "/referral" -> {
+                send.botSendTextMessage(user.getChatId(),"https://t.me/" + username + "?start=" + user.getChatId());
             }
             case "/admin" -> {
                 if (adminId.equals(user.getChatId().toString()) && user.getUserState().equals(UserState.ACTIVATE)) {

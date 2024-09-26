@@ -30,6 +30,7 @@ public class MyBot extends TelegramWebhookBot {
     private final ChatService chatService;
     private final ReferralService referralService;
     private final AdminService adminService;
+    private final KeyboardService keyboardService;
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
@@ -42,23 +43,28 @@ public class MyBot extends TelegramWebhookBot {
 
         Long chatId = message.getChatId();
         String text = message.getText();
+
         User user = userService.findById(chatId);
 
         if (text != null && user.getChatId() == null && referralService.isReferral(text)) {
             referralService.referral(text, chatId, user);
         }
 
-        if (text != null && userService.isActivated(user) && botCommands.isBotCommand(text)) {
-            botCommands.botCommand(user, text);
-        }
-
-        if (text != null && !userService.isActivated(user) && !botCommands.isBotCommand(text)) {
+        if (!userService.isActivated(user)) {
             singUp.singUp(user, message);
             return null;
         }
 
+        if (text != null && user.getUserState().equals(UserState.ACTIVATE) && botCommands.isBotCommand(text)) {
+            botCommands.botCommand(user, text);
+        }
+
+        if (text != null && keyboardService.isKeyboard(text)) {
+            keyboardService.keyboard(user, text);
+        }
+
         if (user.getUserState().equals(UserState.ACTIVATE)) {
-            bridgeService.bridge(user);
+            bridgeService.bridge(user, message);
             return null;
         }
 
@@ -67,7 +73,7 @@ public class MyBot extends TelegramWebhookBot {
         }
 
         if (user.getUserState().equals(UserState.WAITING)) {
-            waitingService.waiting(user);
+            waitingService.waiting(user, message);
             return null;
         }
 
@@ -76,11 +82,8 @@ public class MyBot extends TelegramWebhookBot {
             return null;
         }
 
-        if (
-                text != null && !text.equals("/start")
-                && user.getUserState().equals(UserState.CHAT) && !botCommands.isBotCommand(text)
-        ) {
-            chatService.chatText(user, text);
+        if (user.getUserState().equals(UserState.CHAT)) {
+            chatService.chatText(user, message);
             return null;
         }
 

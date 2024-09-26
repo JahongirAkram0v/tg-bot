@@ -15,11 +15,13 @@ public class SingUpService {
 
     private final UserService service;
     private final SendService send;
+    private final BotCommandsService botCommands;
 
     public void singUp(User user, Message message) {
+
         switch (user.getUserState()) {
             case UserState.START -> signUpForChatId(user, message.getChatId());
-            case UserState.NAME -> signUpForName(user, message.getText());
+            case UserState.NAME -> signUpForName(user, message);
         }
         service.save(user);
     }
@@ -35,9 +37,12 @@ public class SingUpService {
         send.botSendTextMessage(user.getChatId(), text);
     }
 
-    private void signUpForName(User user, String name) {
-        if (name.equals("/start")) return;
-        user.setName(fixName(name));
+    private void signUpForName(User user, Message message) {
+        if (message.getText() == null || message.getText().startsWith("/start") || botCommands.isBotCommand(message.getText())) {
+            send.deleteMessage(message);
+            return;
+        }
+        user.setName(fixName(message.getText()).isEmpty() ? "User" : fixName(message.getText()));
         signUpDone(user);
     }
 
