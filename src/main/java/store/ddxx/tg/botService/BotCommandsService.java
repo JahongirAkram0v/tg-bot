@@ -16,7 +16,7 @@ import java.util.List;
 public class BotCommandsService {
 
     private final List<String> botCommands = Arrays.asList(
-            "/info", "/referral", "⚡️ chat", "➡️ next", "\uD83D\uDED1 stop", "/admin", "/exit");
+            "/info", "/referral", "/admin", "/exit");
     private final Dotenv dotenv = Dotenv.load();
     private final String adminId = dotenv.get("ADMIN_ID");
     private final String username = dotenv.get("TELEGRAM_BOT_USERNAME");
@@ -49,7 +49,7 @@ public class BotCommandsService {
                 send.botSendTextMessage(user.getChatId(),"https://t.me/" + username + "?start=" + user.getChatId());
             }
             case "/admin" -> {
-                if (adminId.equals(user.getChatId().toString()) && user.getUserState().equals(UserState.ACTIVATE)) {
+                if (adminId.equals(user.getChatId().toString())) {
                     user.setUserState(UserState.ADMIN);
                 }
             }

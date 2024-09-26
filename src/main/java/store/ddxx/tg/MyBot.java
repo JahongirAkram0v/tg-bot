@@ -87,7 +87,7 @@ public class MyBot extends TelegramWebhookBot {
             return null;
         }
 
-        if (text != null && user.getUserState().equals(UserState.ADMIN)) {
+        if (text != null && user.getUserState().equals(UserState.ADMIN) && !botCommands.isBotCommand(text)) {
             adminService.sendText(text);
         }
 
