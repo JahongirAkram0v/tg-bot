@@ -24,7 +24,7 @@ public class SendService {
         restTemplate.getForObject(url, String.class);
     }
 
-    private void sendTextMessage(Long chatId, String text) {
+    public void sendTextMessage(Long chatId, String text) {
 
         String url = baseUrl + botToken + "/sendMessage";
 
@@ -41,10 +41,6 @@ public class SendService {
 
     public void activeUsersSendTextMessage(Long chatId, String text, String name) {
         sendTextMessage(chatId, "\uD83D\uDC64:  " + name + "\t\n\n" + text);
-    }
-
-    public void adsTextMessage(Long chatId, String text) {
-        sendTextMessage(chatId, "#Reklama\n\n" + text);
     }
 
     public void chatReplyKeyboardMarkup(Long chatId, String text) {

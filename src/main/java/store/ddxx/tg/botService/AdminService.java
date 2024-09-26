@@ -11,9 +11,9 @@ public class AdminService {
     private final SendService send;
     private final UserService userService;
 
-    public void sendTextAds(String text){
+    public void sendText(String text){
         userService.findAllChatId()
-                .forEach(chatId -> send.adsTextMessage(chatId, text));
+                .forEach(chatId -> send.sendTextMessage(chatId, text));
     }
 
 }
