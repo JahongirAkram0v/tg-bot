@@ -7,6 +7,7 @@ import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.service.ActiveChatUsersService;
 import store.ddxx.tg.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,8 +36,10 @@ public class KeyboardService {
                 }
             }
             case "➡️ next" -> {
-                if (user.getUserState().equals(UserState.CHAT)) {
+                if ( user.getUserState().equals(UserState.CHAT)
+                        && user.getClickedTime().isBefore(LocalDateTime.now().minusSeconds(20)) ) {
                     setController(user, UserState.START_CHAT, "➡️ next ni bosing");
+                    user.setClickedTime(LocalDateTime.now());
                     send.botSendTextMessage(user.getChatId(), "Suhbat boshlansa xabar beriladi");
                 }
             }

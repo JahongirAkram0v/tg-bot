@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import store.ddxx.tg.model.User;
 import store.ddxx.tg.model.UserState;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -19,8 +20,14 @@ public interface UserRepo extends JpaRepository<User, Long> {
     @Query("SELECT t.token " +
             "FROM _user t " +
             "WHERE t.chatId = :chatId")
-    Long findTokenByUserId(@Param("chatId") Long userId);
+    Long findTokenByUserId(@Param("chatId") Long chatId);
 
     @Query("SELECT chatId FROM _user")
     List<Long> findAllChatId();
+
+
+    @Query("SELECT t.clickedTime " +
+            "FROM _user t " +
+            "WHERE t.chatId = :chatId")
+    LocalDateTime findClickedTime(@Param("chatId") Long chatId);
 }

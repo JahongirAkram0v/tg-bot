@@ -6,6 +6,7 @@ import store.ddxx.tg.model.User;
 import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.repository.UserRepo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,4 +36,6 @@ public class UserService {
     public Long findTokenByUserId(Long chatId) {return repo.findTokenByUserId(chatId);}
 
     public List<Long> findAllChatId() {return repo.findAllChatId();}
+
+    public LocalDateTime findClickedTime(Long chatId) {return repo.findClickedTime(chatId);}
 }
