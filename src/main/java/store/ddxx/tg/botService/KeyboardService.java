@@ -38,7 +38,7 @@ public class KeyboardService {
             case "➡️ next" -> {
                 if ( user.getUserState().equals(UserState.CHAT)
                         && user.getClickedTime().isBefore(LocalDateTime.now().minusSeconds(15)) ) {
-                    setController(user, UserState.START_CHAT, "➡️ next ni bosing");
+                    setController(user, UserState.START_CHAT, "Suhbat almashtirildi, istalgan tugmani bosing");
                     user.setClickedTime(LocalDateTime.now());
                     send.botSendTextMessage(user.getChatId(), "Suhbat boshlansa xabar beriladi");
                 }
