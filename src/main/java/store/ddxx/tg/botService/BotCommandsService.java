@@ -16,7 +16,7 @@ import java.util.List;
 public class BotCommandsService {
 
     private final List<String> botCommands = Arrays.asList(
-            "/info", "/referral", "/admin", "/exit");
+            "/info", "/referral", "/admin", "/exit", "⚡️ chat", "➡️ next", "\uD83D\uDED1 stop");
     private final Dotenv dotenv = Dotenv.load();
     private final String adminId = dotenv.get("ADMIN_ID");
     private final String username = dotenv.get("TELEGRAM_BOT_USERNAME");

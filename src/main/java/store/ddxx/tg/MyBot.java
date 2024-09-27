@@ -55,7 +55,11 @@ public class MyBot extends TelegramWebhookBot {
             return null;
         }
 
-        if (text != null && user.getUserState().equals(UserState.ACTIVATE) && botCommands.isBotCommand(text)) {
+        if (
+                text != null
+                && (user.getUserState().equals(UserState.ACTIVATE) || user.getUserState().equals(UserState.ADMIN))
+                && botCommands.isBotCommand(text)
+        ) {
             botCommands.botCommand(user, text);
         }
 

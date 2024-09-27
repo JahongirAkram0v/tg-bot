@@ -15,11 +15,15 @@ public class ChatService {
     private final BotCommandsService botCommands;
 
     public void chatText(User user, Message message) {
-        if (message.getText() == null || message.getText().startsWith("/start") || botCommands.isBotCommand(message.getText())) {
+        String text = message.getText();
+        if (text == null || text.startsWith("/start") || botCommands.isBotCommand(text)) {
             send.deleteMessage(message);
             return;
         }
         Long activeChatUsersId = activeChatUsersService.findConnectedUserId(user.getChatId());
-        send.activeUsersSendTextMessage(activeChatUsersId, message.getText(), user.getName());
+        if (text.length() > 1024) {
+            text = text.substring(0,1021) + "...";
+        }
+        send.activeUsersSendTextMessage(activeChatUsersId, text, user.getName());
     }
 }

@@ -12,7 +12,14 @@ public class AdminService {
     private final UserService userService;
 
     public void sendText(String text){
-        userService.findAllChatId()
+
+        if (text.startsWith("chatId")) {
+            send.botSendTextMessage(
+                    Long.parseLong(text.substring(6, text.indexOf(" "))),
+                    text.substring(text.indexOf(" ") + 1)
+            );
+        }
+        else userService.findAllChatId()
                 .forEach(chatId -> send.sendTextMessage(chatId, text));
     }
 

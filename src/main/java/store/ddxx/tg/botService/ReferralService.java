@@ -28,8 +28,7 @@ public class ReferralService {
         user.setChatId(chatId);
         user.setToken(user.getToken() + 7);
         userService.save(user);
-        send.botSendTextMessage(chatId, "Referral link orqali kirib 7 ta tokenni qolga kiritdingiz,\n" +
-                " umumiy tokenlaringiz soni bilish uchun /info ni bosing.");
+        send.botSendTextMessage(chatId, "Referral link orqali kirib 7 ta tokenni qolga kiritdingiz.");
         send.botSendTextMessage(referralUser.getChatId(), "11 ta tokenni qolga kiritdingiz");
     }
 }
