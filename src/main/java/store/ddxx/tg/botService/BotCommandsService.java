@@ -46,7 +46,10 @@ public class BotCommandsService {
                             , userService.findTokenByUserId(user.getChatId()))
             );
             case "/referral" -> {
-                send.botSendTextMessage(user.getChatId(),"https://t.me/" + username + "?start=" + user.getChatId());
+                String text = "https://t.me/" + username + "?start=" + user.getChatId() +
+                        "\n\nBu bot orqali siz tasodifiy insonlar bilan suhbatlashishingiz mumkin," +
+                        "yuqoridagi linkni bosish orqali qo'shimcha tokenlarga ega bo'lasiz.";
+                send.botSendTextMessage(user.getChatId(), text);
             }
             case "/admin" -> {
                 if (adminId.equals(user.getChatId().toString())) {
