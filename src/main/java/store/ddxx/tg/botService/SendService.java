@@ -1,19 +1,25 @@
 package store.ddxx.tg.botService;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import store.ddxx.tg.model.User;
+import store.ddxx.tg.model.UserState;
+import store.ddxx.tg.service.UserService;
 
 import java.util.*;
 
 @Component
+@RequiredArgsConstructor
 public class SendService {
 
     private final Dotenv dotenv = Dotenv.load();
     private final String botToken = dotenv.get("TELEGRAM_BOT_TOKEN");
     private final String baseUrl = dotenv.get("BASE_URL");
+    private final UserService userService;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -40,6 +46,9 @@ public class SendService {
         try {
             restTemplate.postForObject(url, requestBody, String.class);
         } catch (RestClientException e) {
+            User user = userService.findById(chatId);
+            user.setUserState(UserState.ACTIVATE);
+            userService.save(user);
             System.out.println(e.getMessage());
         }
     }
@@ -75,6 +84,9 @@ public class SendService {
         try {
             restTemplate.postForObject(url, requestBody, String.class);
         } catch (RestClientException e) {
+            User user = userService.findById(chatId);
+            user.setUserState(UserState.ACTIVATE);
+            userService.save(user);
             System.out.println(e.getMessage());
         }
     }
@@ -105,6 +117,9 @@ public class SendService {
         try {
             restTemplate.postForObject(url, requestBody, String.class);
         } catch (RestClientException e) {
+            User user = userService.findById(chatId);
+            user.setUserState(UserState.ACTIVATE);
+            userService.save(user);
             System.out.println(e.getMessage());
         }
     }
