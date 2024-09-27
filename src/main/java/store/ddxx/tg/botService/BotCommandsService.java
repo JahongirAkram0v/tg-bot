@@ -48,7 +48,7 @@ public class BotCommandsService {
             case "/referral" -> {
                 String text = "https://t.me/" + username + "?start=" + user.getChatId() +
                         "\n\nBu bot orqali siz tasodifiy insonlar bilan suhbatlashishingiz mumkin," +
-                        "yuqoridagi linkni bosish orqali qo'shimcha tokenlarga ega bo'lasiz.";
+                        " yuqoridagi linkni bosish orqali qo'shimcha tokenlarga ega bo'lasiz.\n";
                 send.botSendTextMessage(user.getChatId(), text);
             }
             case "/admin" -> {
