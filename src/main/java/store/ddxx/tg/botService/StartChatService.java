@@ -13,7 +13,6 @@ import store.ddxx.tg.service.UserService;
 public class StartChatService {
 
     @Setter
-    @Getter
     private boolean changer = true;
     private final UserService userService;
 

@@ -47,7 +47,7 @@ public class KeyboardService {
                 if (user.getUserState().equals(UserState.CHAT)) {
                     setController(user, UserState.ACTIVATE, "Suhbat yakunlandi. ➡️ next ni bosing");
                 } else if (user.getUserState().equals(UserState.WAITING)) {
-                    startChatService.setChanger(!startChatService.isChanger());
+                    startChatService.setChanger(true);
                     user.setUserState(UserState.ACTIVATE);
                 }
             }
