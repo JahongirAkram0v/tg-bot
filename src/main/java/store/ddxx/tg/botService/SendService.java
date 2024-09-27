@@ -2,6 +2,7 @@ package store.ddxx.tg.botService;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -21,7 +22,11 @@ public class SendService {
         String url = baseUrl + botToken + "/deleteMessage?chat_id=" + message.getChatId()
                 +"&message_id=" + message.getMessageId();
 
-        restTemplate.getForObject(url, String.class);
+        try {
+            restTemplate.getForObject(url, String.class);
+        } catch (RestClientException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void sendTextMessage(Long chatId, String text) {
@@ -32,7 +37,11 @@ public class SendService {
         requestBody.put("chat_id", chatId);
         requestBody.put("text", text);
 
-        restTemplate.postForObject(url, requestBody, String.class);
+        try {
+            restTemplate.postForObject(url, requestBody, String.class);
+        } catch (RestClientException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void botSendTextMessage(Long chatId, String text) {
@@ -63,7 +72,11 @@ public class SendService {
 
         requestBody.put("reply_markup", replyMarkup);
 
-        restTemplate.postForObject(url, requestBody, String.class);
+        try {
+            restTemplate.postForObject(url, requestBody, String.class);
+        } catch (RestClientException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void controlReplyKeyboardMarkup(Long chatId, String text) {
@@ -89,6 +102,10 @@ public class SendService {
 
         requestBody.put("reply_markup", replyMarkup);
 
-        restTemplate.postForObject(url, requestBody, String.class);
+        try {
+            restTemplate.postForObject(url, requestBody, String.class);
+        } catch (RestClientException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
