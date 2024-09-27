@@ -22,7 +22,7 @@ public class ChatService {
         }
         Long activeChatUsersId = activeChatUsersService.findConnectedUserId(user.getChatId());
         if (text.length() > 1024) {
-            text = text.substring(0,1021) + "...";
+            text = String.format("%s...", text.substring(0, 1021));
         }
         send.activeUsersSendTextMessage(activeChatUsersId, text, user.getName());
     }
