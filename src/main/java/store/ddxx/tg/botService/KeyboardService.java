@@ -45,7 +45,7 @@ public class KeyboardService {
             }
             case "\uD83D\uDED1 stop" -> {
                 if (user.getUserState().equals(UserState.CHAT)) {
-                    setController(user, UserState.ACTIVATE, "Suhbat yakunlandi. ➡️ next ni bosing");
+                    setController(user, UserState.ACTIVATE, "Suhbat yakunlandi, istalgan tugmani bosing");
                 } else if (user.getUserState().equals(UserState.WAITING)) {
                     startChatService.setChanger(true);
                     user.setUserState(UserState.ACTIVATE);
