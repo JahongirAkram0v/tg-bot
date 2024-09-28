@@ -29,13 +29,13 @@ public class UserService {
                 user.getUserState() != null;
     }
 
-    public User findFirstByUserState() {return repo.findFirstByUserState(UserState.WAITING);}
+    public Long findFirstChatIdByUserState() {return repo.findFirstChatIdByUserState();}
+
+    public boolean existsByChatId(Long chatId) {return repo.existsByChatId(chatId);}
 
     public Long findCountUsers() {return repo.findCountUsers();}
 
     public Long findTokenByUserId(Long chatId) {return repo.findTokenByUserId(chatId);}
 
     public List<Long> findAllChatId() {return repo.findAllChatId();}
-
-    public LocalDateTime findClickedTime(Long chatId) {return repo.findClickedTime(chatId);}
 }

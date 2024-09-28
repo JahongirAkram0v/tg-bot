@@ -12,22 +12,23 @@ public class ReferralService {
     private final UserService userService;
     private final SendService send;
 
+    private Long referralId;
+
     public boolean isReferral(String referral) {
-        return referral.length() > 7
-                && referral.startsWith("/start")
-                && userService.findById(Long.parseLong(referral.substring(7))).getChatId() != null;
+        if (referral.length() > 8) referralId = Long.parseLong(referral.substring(7));
+        return referral.startsWith("/start") && userService.existsByChatId(referralId);
     }
 
-    public void referral(String referral, Long chatId, User user) {
-        Long referralId = Long.parseLong(referral.substring(7));
+    public void referral(Long chatId, User user) {
+
+        user.setChatId(chatId);
+        user.setToken(user.getToken() + 7);
+        userService.save(user);
 
         User referralUser = userService.findById(referralId);
         referralUser.setToken(referralUser.getToken() + 11);
         userService.save(referralUser);
 
-        user.setChatId(chatId);
-        user.setToken(user.getToken() + 7);
-        userService.save(user);
         send.botSendTextMessage(chatId, "Referral link orqali kirib 7 ta tokenni qolga kiritdingiz.");
         send.botSendTextMessage(referralUser.getChatId(), "11 ta tokenni qolga kiritdingiz");
     }

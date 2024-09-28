@@ -7,9 +7,10 @@ import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.service.ActiveChatUsersService;
 import store.ddxx.tg.service.UserService;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+
+import static store.ddxx.tg.model.UserState.*;
 
 @Component
 @RequiredArgsConstructor
@@ -31,24 +32,22 @@ public class KeyboardService {
 
         switch (message) {
             case "⚡️ chat" -> {
-                if (user.getUserState().equals(UserState.ACTIVATE)) {
-                    user.setUserState(UserState.START_CHAT);
+                if (user.getUserState().equals(ACTIVATE)) {
+                    user.setUserState(START_CHAT);
                 }
             }
             case "➡️ next" -> {
-                if ( user.getUserState().equals(UserState.CHAT)
-                        && user.getClickedTime().isBefore(LocalDateTime.now().minusSeconds(15)) ) {
-                    setController(user, UserState.START_CHAT, "Suhbat almashtirildi, istalgan tugmani bosing");
-                    user.setClickedTime(LocalDateTime.now());
+                if (user.getUserState().equals(CHAT)) {
+                    setController(user, START_CHAT, "Suhbatdosh almashtirildi, Suhbatni bo'shlash uchun istalgan tugmani bosing.");
                     send.botSendTextMessage(user.getChatId(), "Suhbat boshlansa xabar beriladi");
                 }
             }
             case "\uD83D\uDED1 stop" -> {
-                if (user.getUserState().equals(UserState.CHAT)) {
-                    setController(user, UserState.ACTIVATE, "Suhbat yakunlandi, istalgan tugmani bosing");
-                } else if (user.getUserState().equals(UserState.WAITING)) {
+                if (user.getUserState().equals(CHAT)) {
+                    setController(user, ACTIVATE, "Suhbat yakunlandi, Suhbatni bo'shlash uchun istalgan tugmani bosing.");
+                } else if (user.getUserState().equals(WAITING)) {
                     startChatService.setChanger(true);
-                    user.setUserState(UserState.ACTIVATE);
+                    user.setUserState(ACTIVATE);
                 }
             }
         }
@@ -57,11 +56,15 @@ public class KeyboardService {
 
     private void setController(User user, UserState userState, String text) {
         Long activeChatUsersId = activeChatUsersService.findConnectedUserId(user.getChatId());
-        User waitingUser = userService.findById(activeChatUsersId);
+
         send.controlReplyKeyboardMarkup(activeChatUsersId, text);
+        User waitingUser = userService.findById(activeChatUsersId);
+
+        if (!waitingUser.getUserState().equals(ACTIVATE)) {
+            waitingUser.setUserState(START_CHAT);
+        }
+
         user.setUserState(userState);
-        waitingUser.setUserState(UserState.START_CHAT);
         activeChatUsersService.deleteByUserId1OrUserId2(user.getChatId());
     }
-
 }

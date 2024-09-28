@@ -1,14 +1,7 @@
 package store.ddxx.tg.botService;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import store.ddxx.tg.model.User;
-import store.ddxx.tg.model.UserState;
-import store.ddxx.tg.service.UserService;
 
 import java.util.*;
 
@@ -16,41 +9,15 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SendService {
 
-    private final Dotenv dotenv = Dotenv.load();
-    private final String botToken = dotenv.get("TELEGRAM_BOT_TOKEN");
-    private final String baseUrl = dotenv.get("BASE_URL");
-    private final UserService userService;
-
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    public void deleteMessage(Message message) {
-
-        String url = baseUrl + botToken + "/deleteMessage?chat_id=" + message.getChatId()
-                +"&message_id=" + message.getMessageId();
-
-        try {
-            restTemplate.getForObject(url, String.class);
-        } catch (RestClientException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    private final CheckUserService checkUserService;
 
     public void sendTextMessage(Long chatId, String text) {
-
-        String url = baseUrl + botToken + "/sendMessage";
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("chat_id", chatId);
         requestBody.put("text", text);
 
-        try {
-            restTemplate.postForObject(url, requestBody, String.class);
-        } catch (RestClientException e) {
-            User user = userService.findById(chatId);
-            user.setUserState(UserState.ACTIVATE);
-            userService.save(user);
-            System.out.println(e.getMessage());
-        }
+        checkUserService.check(requestBody, chatId);
     }
 
     public void botSendTextMessage(Long chatId, String text) {
@@ -62,8 +29,6 @@ public class SendService {
     }
 
     public void chatReplyKeyboardMarkup(Long chatId, String text) {
-
-        String url = baseUrl + botToken + "/sendMessage";
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("chat_id", chatId);
@@ -81,19 +46,10 @@ public class SendService {
 
         requestBody.put("reply_markup", replyMarkup);
 
-        try {
-            restTemplate.postForObject(url, requestBody, String.class);
-        } catch (RestClientException e) {
-            User user = userService.findById(chatId);
-            user.setUserState(UserState.ACTIVATE);
-            userService.save(user);
-            System.out.println(e.getMessage());
-        }
+        checkUserService.check(requestBody, chatId);
     }
 
     public void controlReplyKeyboardMarkup(Long chatId, String text) {
-
-        String url = baseUrl + botToken + "/sendMessage";
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("chat_id", chatId);
@@ -114,13 +70,6 @@ public class SendService {
 
         requestBody.put("reply_markup", replyMarkup);
 
-        try {
-            restTemplate.postForObject(url, requestBody, String.class);
-        } catch (RestClientException e) {
-            User user = userService.findById(chatId);
-            user.setUserState(UserState.ACTIVATE);
-            userService.save(user);
-            System.out.println(e.getMessage());
-        }
+        checkUserService.check(requestBody, chatId);
     }
 }

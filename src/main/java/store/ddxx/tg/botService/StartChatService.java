@@ -1,6 +1,5 @@
 package store.ddxx.tg.botService;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;

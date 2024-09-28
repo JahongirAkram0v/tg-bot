@@ -15,21 +15,35 @@ public class SelectorService {
     private final SendService send;
     private final UserService userService;
     private final ActiveChatUsersService activeChatUsersService;
+    private final StartChatService startChatService;
 
     public void selector(User user) {
 
-        User waitingUser = userService.findFirstByUserState();
-        waitingUser.setUserState(UserState.CHAT);
+        Long waitingUserId = userService.findFirstChatIdByUserState();
+
+        send.botSendTextMessage(waitingUserId, "Suhbatni boshlashingiz mumkin.\n - 'Salom' deb yozing.");
+
+        User waitingUser = userService.findById(waitingUserId);
+
+        if (waitingUser.getUserState().equals(UserState.ACTIVATE)) {
+            startChatService.setChanger(true);
+            user.setUserState(UserState.START_CHAT);
+            userService.save(user);
+            send.controlReplyKeyboardMarkup(
+                    user.getChatId(),
+                    "Suhbatdosh qayta topilyapti, qayta boshlash uchun istalgan tugmani bosing.");
+            return;
+        }
+
         user.setUserState(UserState.CHAT);
+        waitingUser.setUserState(UserState.CHAT);
+
+        send.controlReplyKeyboardMarkup(user.getChatId(), "Suhbatni boshlashingiz mumkin.\n - 'Salom' deb yozing.");
 
         ActiveChatUsers activeChatUsers = ActiveChatUsers.builder()
                 .userId1(user.getChatId())
                 .userId2(waitingUser.getChatId())
                 .build();
         activeChatUsersService.save(activeChatUsers);
-
-
-        send.botSendTextMessage(waitingUser.getChatId(), "Suhbatni boshlashingiz mumkin.\n - 'Salom' deb yozing.");
-        send.controlReplyKeyboardMarkup(user.getChatId(), "Suhbatni boshlashingiz mumkin.");
     }
 }

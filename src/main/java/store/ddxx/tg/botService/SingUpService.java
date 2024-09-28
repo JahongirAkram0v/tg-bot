@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 public class SingUpService {
 
     private final UserService service;
-    private final SendService send;
     private final BotCommandsService botCommands;
+    private final ReferralService referralService;
+    private final DeleteService deleteService;
+    private final SendService send;
 
     public void singUp(User user, Message message) {
 
@@ -38,10 +40,17 @@ public class SingUpService {
     }
 
     private void signUpForName(User user, Message message) {
-        if (message.getText() == null || message.getText().startsWith("/start") || botCommands.isBotCommand(message.getText())) {
-            send.deleteMessage(message);
+        String text = message.getText();
+        if (botCommands.isBotCommand(text)) {
+            deleteService.deleteMessage(message);
             return;
         }
+
+        if (text.equals("/start") || referralService.isReferral(text)) {
+            signUpForChatId(user, user.getChatId());
+            return;
+        }
+
         user.setName(fixName(message.getText()).isEmpty() ? "User" : fixName(message.getText()));
         signUpDone(user);
     }
@@ -57,6 +66,6 @@ public class SingUpService {
 
     private void signUpDone(User user) {
         user.setUserState(UserState.ACTIVATE);
-        send.chatReplyKeyboardMarkup(user.getChatId(), "Subhatni boshlash uchun ⚡️ chat ni bosing");
+        send.chatReplyKeyboardMarkup(user.getChatId(), "Subhatni boshlash uchun ⚡️ chat tugmasini bosing");
     }
 }

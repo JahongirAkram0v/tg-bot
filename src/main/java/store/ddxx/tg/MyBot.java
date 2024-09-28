@@ -9,8 +9,9 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import store.ddxx.tg.botService.*;
 import store.ddxx.tg.model.User;
-import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.service.UserService;
+
+import static store.ddxx.tg.model.UserState.*;
 
 @Component
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class MyBot extends TelegramWebhookBot {
     private final ReferralService referralService;
     private final AdminService adminService;
     private final KeyboardService keyboardService;
+    private final DeleteService deleteMessage;
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
@@ -44,10 +46,15 @@ public class MyBot extends TelegramWebhookBot {
         Long chatId = message.getChatId();
         String text = message.getText();
 
+        if (text == null) {
+            deleteMessage.deleteMessage(message);
+            return null;
+        }
+
         User user = userService.findById(chatId);
 
-        if (text != null && user.getChatId() == null && referralService.isReferral(text)) {
-            referralService.referral(text, chatId, user);
+        if (user.getChatId() == null && referralService.isReferral(text)) {
+            referralService.referral(chatId, user);
         }
 
         if (!userService.isActivated(user)) {
@@ -55,43 +62,39 @@ public class MyBot extends TelegramWebhookBot {
             return null;
         }
 
-        if (
-                text != null
-                && (user.getUserState().equals(UserState.ACTIVATE) || user.getUserState().equals(UserState.ADMIN))
-                && botCommands.isBotCommand(text)
-        ) {
+        if ( botCommands.isBotCommand(text) && (user.getUserState().equals(ACTIVATE) || user.getUserState().equals(ADMIN))) {
             botCommands.botCommand(user, text);
         }
 
-        if (text != null && keyboardService.isKeyboard(text)) {
+        if (keyboardService.isKeyboard(text)) {
             keyboardService.keyboard(user, text);
         }
 
-        if (user.getUserState().equals(UserState.ACTIVATE)) {
-            bridgeService.bridge(user, message);
+        if (user.getUserState().equals(ACTIVATE)) {
+            bridgeService.bridge(user);
             return null;
         }
 
-        if (user.getUserState().equals(UserState.START_CHAT)) {
+        if (user.getUserState().equals(START_CHAT)) {
             startChatService.startChat(user);
         }
 
-        if (user.getUserState().equals(UserState.WAITING)) {
-            waitingService.waiting(user, message);
+        if (user.getUserState().equals(WAITING)) {
+            waitingService.waiting(user);
             return null;
         }
 
-        if (user.getUserState().equals(UserState.SELECTOR)) {
+        if (user.getUserState().equals(SELECTOR)) {
             selectorService.selector(user);
             return null;
         }
 
-        if (user.getUserState().equals(UserState.CHAT)) {
-            chatService.chatText(user, message);
+        if (user.getUserState().equals(CHAT)) {
+            chatService.chatText(user, text);
             return null;
         }
 
-        if (text != null && user.getUserState().equals(UserState.ADMIN) && !botCommands.isBotCommand(text)) {
+        if (user.getUserState().equals(ADMIN) && !botCommands.isBotCommand(text)) {
             adminService.sendText(text);
         }
 

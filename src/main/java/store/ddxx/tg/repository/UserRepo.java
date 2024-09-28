@@ -4,15 +4,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import store.ddxx.tg.model.User;
-import store.ddxx.tg.model.UserState;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
 public interface UserRepo extends JpaRepository<User, Long> {
 
-    User findFirstByUserState(UserState state);
+    boolean existsByChatId(Long chatId);
+
+    @Query("SELECT u.chatId FROM _user u WHERE u.userState = 'WAITING'")
+    Long findFirstChatIdByUserState();
 
     @Query("SELECT COUNT(*) FROM _user")
     Long findCountUsers();
@@ -24,10 +25,4 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     @Query("SELECT chatId FROM _user")
     List<Long> findAllChatId();
-
-
-    @Query("SELECT t.clickedTime " +
-            "FROM _user t " +
-            "WHERE t.chatId = :chatId")
-    LocalDateTime findClickedTime(@Param("chatId") Long chatId);
 }
