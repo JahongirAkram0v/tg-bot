@@ -67,7 +67,7 @@ public class MyBot extends TelegramWebhookBot {
         }
 
         if (keyboardService.isKeyboard(text)) {
-            keyboardService.keyboard(user, text);
+            keyboardService.keyboard(user, message);
         }
 
         if (user.getUserState().equals(ACTIVATE)) {
@@ -80,7 +80,7 @@ public class MyBot extends TelegramWebhookBot {
         }
 
         if (user.getUserState().equals(WAITING)) {
-            waitingService.waiting(user);
+            waitingService.waiting(user, message);
             return null;
         }
 
@@ -90,7 +90,7 @@ public class MyBot extends TelegramWebhookBot {
         }
 
         if (user.getUserState().equals(CHAT)) {
-            chatService.chatText(user, text);
+            chatService.chatText(user, message);
             return null;
         }
 

@@ -2,11 +2,13 @@ package store.ddxx.tg.botService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import store.ddxx.tg.model.User;
 import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.service.ActiveChatUsersService;
 import store.ddxx.tg.service.UserService;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,15 +24,16 @@ public class KeyboardService {
     private final UserService userService;
     private final ActiveChatUsersService activeChatUsersService;
     private final StartChatService startChatService;
+    private final DeleteService deleteService;
 
 
     public boolean isKeyboard(String message) {
         return keyboards.stream().anyMatch(keyboard -> keyboard.equals(message));
     }
 
-    public void keyboard(User user, String message) {
+    public void keyboard(User user, Message message) {
 
-        switch (message) {
+        switch (message.getText()) {
             case "⚡️ chat" -> {
                 if (user.getUserState().equals(ACTIVATE)) {
                     user.setUserState(START_CHAT);
@@ -38,6 +41,12 @@ public class KeyboardService {
             }
             case "➡️ next" -> {
                 if (user.getUserState().equals(CHAT)) {
+                    if (user.getClickedTime().isBefore(LocalTime.now().minusSeconds(15))) {
+                        deleteService.deleteMessage(message);
+                        return;
+                    }
+                    user.setClickedTime(LocalTime.now());
+                    userService.save(user);
                     setController(user, START_CHAT, "Suhbatdosh almashtirildi, Suhbatni bo'shlash uchun istalgan tugmani bosing.");
                     send.botSendTextMessage(user.getChatId(), "Suhbat boshlansa xabar beriladi");
                 }

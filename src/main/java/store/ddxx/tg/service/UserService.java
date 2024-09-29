@@ -3,10 +3,8 @@ package store.ddxx.tg.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.ddxx.tg.model.User;
-import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.repository.UserRepo;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
