@@ -22,9 +22,7 @@ public class UserService {
     }
 
     public boolean isActivated(User user) {
-        return user.getChatId() != null &&
-                user.getName() != null &&
-                user.getUserState() != null;
+        return user.getChatId() != null && user.getName() != null;
     }
 
     public Long findFirstChatIdByUserState() {return repo.findFirstChatIdByUserState();}
