@@ -55,7 +55,7 @@ public class SingUpService {
         signUpDone(user);
     }
 
-    private String fixName(String name) {
+    public String fixName(String name) {
         return name
                 .chars()
                 .filter(Character::isLetter)

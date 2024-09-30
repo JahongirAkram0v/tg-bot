@@ -17,13 +17,14 @@ public class ChatService {
     private final UserService userService;
     private final BotCommandsService botCommandsService;
     private final DeleteService deleteService;
+    private final ReferralService referralService;
 
     public void chatText(User user, Message message) {
         if (botCommandsService.isBotCommand(message.getText())) {
             deleteService.deleteMessage(message);
             return;
         }
-        if (message.getText().equals("/start")) {
+        if (message.getText().equals("/start") || referralService.isReferral(message.getText())) {
             send.controlReplyKeyboardMarkup(user.getChatId(), "\uD83E\uDD16:\t\n" +
                     "Siz hali ham suhbat jarayonidasiz, - 'Qandaysiz!' deb yozing'");
             return;

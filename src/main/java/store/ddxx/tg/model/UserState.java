@@ -10,4 +10,5 @@ public enum UserState {
     SELECTOR,
     CHAT,
     ADMIN,
+    EDIT
 }
