@@ -23,6 +23,11 @@ public class ChatService {
             deleteService.deleteMessage(message);
             return;
         }
+        if (message.getText().equals("/start")) {
+            send.controlReplyKeyboardMarkup(user.getChatId(), "\uD83E\uDD16:\t\n" +
+                    "Siz hali ham suhbat jarayonidasiz, - 'Qandaysiz!' deb yozing'");
+            return;
+        }
         String text = message.getText();
         Long activeChatUsersId = activeChatUsersService.findConnectedUserId(user.getChatId());
         if (text.length() > 1024) {
@@ -33,6 +38,7 @@ public class ChatService {
         if (userService.findById(activeChatUsersId).getUserState().equals(UserState.ACTIVATE)) {
             user.setUserState(UserState.START_CHAT);
             userService.save(user);
+            activeChatUsersService.deleteByUserId1OrUserId2(user.getChatId());
             send.controlReplyKeyboardMarkup(
                     user.getChatId(),
                     "Suhbatdosh qayta topilyapti, qayta boshlash uchun istalgan tugmani bosing.");

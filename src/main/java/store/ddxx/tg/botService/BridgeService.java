@@ -13,7 +13,8 @@ public class BridgeService {
     public void bridge(User user) {
         send.chatReplyKeyboardMarkup(
                 user.getChatId(),
-                "Yana bir bor salom " + user.getName()
+                "\uD83E\uDD16:\t\n" +
+                        "Yana bir bor salom " + user.getName()
                         + ".\nSuhbatni boshlamoqchi bo'lsangiz ⚡️ chat ni bosing."
         );
     }

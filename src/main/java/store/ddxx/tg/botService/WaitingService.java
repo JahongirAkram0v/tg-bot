@@ -17,12 +17,13 @@ public class WaitingService {
     private final UserService userService;
 
     public void waiting(User user, Message message) {
-        if (!message.getText().equals("⚡️ chat") && user.getClickedTime().isAfter(LocalTime.now().minusSeconds(15))) {
+        if (!(message.getText().equals("⚡️ chat") || message.getText().equals("/start")) && user.getClickedTime().isAfter(LocalTime.now().minusSeconds(15))) {
             deleteService.deleteMessage(message);
             return;
         }
         user.setClickedTime(LocalTime.now());
         userService.save(user);
-        send.controlReplyKeyboardMarkup(user.getChatId(), "Kutib turing. Suhbat boshlansa xabar beriladi");
+        send.controlReplyKeyboardMarkup(user.getChatId(), "\uD83E\uDD16:\t\n" +
+                "Kutib turing. Suhbat boshlansa xabar beriladi");
     }
 }

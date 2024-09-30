@@ -25,14 +25,14 @@ public class SendService {
     }
 
     public void activeUsersSendTextMessage(Long chatId, String text, String name) {
-        sendTextMessage(chatId, "\uD83D\uDC64:  " + name + "\t\n\n" + text);
+        controlReplyKeyboardMarkup(chatId, "\uD83D\uDC64:  " + name + "\t\n\n" + text);
     }
 
     public void chatReplyKeyboardMarkup(Long chatId, String text) {
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("chat_id", chatId);
-        requestBody.put("text", "\uD83E\uDD16:\t\n" + text);
+        requestBody.put("text", text);
 
         Map<String, Object> keyboardButton = new HashMap<>();
         keyboardButton.put("text", "⚡️ chat");
@@ -53,7 +53,7 @@ public class SendService {
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("chat_id", chatId);
-        requestBody.put("text", "\uD83E\uDD16:\t\n" + text);
+        requestBody.put("text", text);
 
         Map<String, Object> keyboardButton1 = new HashMap<>();
         keyboardButton1.put("text", "\uD83D\uDED1 stop");

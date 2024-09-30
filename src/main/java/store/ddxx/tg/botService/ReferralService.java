@@ -15,7 +15,12 @@ public class ReferralService {
     private Long referralId;
 
     public boolean isReferral(String referral) {
-        if (referral.length() > 8) referralId = Long.parseLong(referral.substring(7));
+        try {
+            if (referral.length() > 8) referralId = Long.parseLong(referral.substring(7));
+        } catch (NumberFormatException e) {
+            System.out.println("REFERRAL : " + e.getMessage());
+            return false;
+        }
         return referral.startsWith("/start") && userService.existsByChatId(referralId);
     }
 

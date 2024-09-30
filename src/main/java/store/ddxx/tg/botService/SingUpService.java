@@ -66,6 +66,7 @@ public class SingUpService {
 
     private void signUpDone(User user) {
         user.setUserState(UserState.ACTIVATE);
-        send.chatReplyKeyboardMarkup(user.getChatId(), "Subhatni boshlash uchun ⚡️ chat tugmasini bosing");
+        send.chatReplyKeyboardMarkup(user.getChatId(), "\uD83E\uDD16:\t\n" +
+                "Subhatni boshlash uchun ⚡️ chat tugmasini bosing");
     }
 }

@@ -51,6 +51,8 @@ public class MyBot extends TelegramWebhookBot {
             return null;
         }
 
+        text = text.trim();
+
         User user = userService.findById(chatId);
 
         if (user.getChatId() == null && referralService.isReferral(text)) {
