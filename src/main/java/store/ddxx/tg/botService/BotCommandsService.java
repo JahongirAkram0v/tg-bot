@@ -17,7 +17,7 @@ import static store.ddxx.tg.model.UserState.*;
 public class BotCommandsService {
 
     private final List<String> botCommands = Arrays.asList(
-            "/info", "/referral", "/edit", "/admin", "/exit", "⚡️ chat", "➡️ next", "\uD83D\uDED1 stop");
+            "/info", "/referral", "/admin", "/exit", "⚡️ chat", "➡️ next", "\uD83D\uDED1 stop"); ///edit
     private final Dotenv dotenv = Dotenv.load();
     private final String adminId = dotenv.get("ADMIN_ID");
     private final String username = dotenv.get("TELEGRAM_BOT_USERNAME");
@@ -59,12 +59,12 @@ public class BotCommandsService {
             }
             case "/exit" -> user.setUserState(ACTIVATE);
 
-            case "/edit" -> {
-                send.botSendTextMessage(user.getChatId(), "Sizning joriy ismingiz " + user.getName() + "\n" +
-                                                                "Yangi ismingizni kiriting : \n\n" +
-                                                                "[Ism faqat harflardan iborat va 20ta belgidan oshmasligi kerak.]");
-                user.setUserState(EDIT);
-            }
+//            case "/edit" -> {
+//                send.botSendTextMessage(user.getChatId(), "Sizning joriy ismingiz " + user.getName() + "\n" +
+//                                                                "Yangi ismingizni kiriting : \n\n" +
+//                                                                "[Ism faqat harflardan iborat va 20ta belgidan oshmasligi kerak.]");
+//                user.setUserState(EDIT);
+//            }
         }
         userService.save(user);
 

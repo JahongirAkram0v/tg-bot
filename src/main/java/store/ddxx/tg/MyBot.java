@@ -33,7 +33,7 @@ public class MyBot extends TelegramWebhookBot {
     private final AdminService adminService;
     private final KeyboardService keyboardService;
     private final DeleteService deleteMessage;
-    private final EditNameService editNameService;
+//    private final EditNameService editNameService;
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
@@ -65,9 +65,9 @@ public class MyBot extends TelegramWebhookBot {
             return null;
         }
 
-        if (user.getUserState().equals(EDIT) && !botCommands.isBotCommand(text)) {
-            editNameService.editName(user, text);
-        }
+//        if (user.getUserState().equals(EDIT) && !botCommands.isBotCommand(text)) {
+//            editNameService.editName(user, text);
+//        }
 
         if ( botCommands.isBotCommand(text) && (user.getUserState().equals(ACTIVATE) || user.getUserState().equals(ADMIN))) {
             botCommands.botCommand(user, text);
