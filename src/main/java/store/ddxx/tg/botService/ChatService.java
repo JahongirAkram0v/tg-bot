@@ -20,6 +20,19 @@ public class ChatService {
     private final ReferralService referralService;
 
     public void chatText(User user, Message message) {
+
+        if (message.getEntities() != null) {
+
+            message.getEntities()
+                    .stream()
+                    .filter(entity -> "url".equals(entity.getType()) || "mention".equals(entity.getType()))
+                    .findFirst()
+                    .ifPresent(entity -> {
+                        deleteService.deleteMessage(message);
+                        send.botSendTextMessage(user.getChatId(), "Siz bunday xabar yubora olmaysiz.");
+                    });
+        }
+
         if (botCommandsService.isBotCommand(message.getText())) {
             deleteService.deleteMessage(message);
             return;
