@@ -21,10 +21,8 @@ public class SelectorService {
 
         Long waitingUserId = userService.findFirstChatIdByUserState();
 
-        send.controlReplyKeyboardMarkup(waitingUserId, """
-                \uD83E\uDD16:\t
-                Suhbatni boshlashingiz mumkin.
-                 - 'Salom' deb yozing.""");
+        send.controlReplyKeyboardMarkup(waitingUserId,
+                "Suhbatni boshlashingiz mumkin.\n - 'Salom' deb yozing.");
 
         User waitingUser = userService.findById(waitingUserId);
 
@@ -34,18 +32,15 @@ public class SelectorService {
             userService.save(user);
             send.controlReplyKeyboardMarkup(
                     user.getChatId(),
-                    "\uD83E\uDD16:\t\n" +
-                            "Suhbatdosh qayta topilyapti, qayta boshlash uchun istalgan tugmani bosing.");
+                    "Suhbatdosh qayta topilyapti, qayta boshlash uchun istalgan tugmani bosing.");
             return;
         }
 
         user.setUserState(UserState.CHAT);
         waitingUser.setUserState(UserState.CHAT);
 
-        send.controlReplyKeyboardMarkup(user.getChatId(), """
-                \uD83E\uDD16:\t
-                Suhbatni boshlashingiz mumkin.
-                 - 'Salom' deb yozing.""");
+        send.controlReplyKeyboardMarkup(user.getChatId(),
+                "Suhbatni boshlashingiz mumkin.\n - 'Salom' deb yozing.");
 
         ActiveChatUsers activeChatUsers = ActiveChatUsers.builder()
                 .userId1(user.getChatId())

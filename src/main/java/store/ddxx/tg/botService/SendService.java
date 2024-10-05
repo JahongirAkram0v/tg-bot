@@ -25,7 +25,27 @@ public class SendService {
     }
 
     public void activeUsersSendTextMessage(Long chatId, String text, String name) {
-        controlReplyKeyboardMarkup(chatId, "\uD83D\uDC64:  " + name + "\t\n\n" + text);
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("chat_id", chatId);
+        requestBody.put("text", "\uD83D\uDC64:  " + name + "\t\n\n" + text);
+
+        Map<String, Object> keyboardButton1 = new HashMap<>();
+        keyboardButton1.put("text", "\uD83D\uDED1 stop");
+
+        Map<String, Object> keyboardButton2 = new HashMap<>();
+        keyboardButton2.put("text", "➡️ next");
+
+        List<List<Map<String, Object>>> keyboard = new ArrayList<>();
+        keyboard.add(List.of(keyboardButton1, keyboardButton2));
+
+        Map<String, Object> replyMarkup = new HashMap<>();
+        replyMarkup.put("keyboard", keyboard);
+        replyMarkup.put("resize_keyboard", true);
+
+        requestBody.put("reply_markup", replyMarkup);
+
+        checkUserService.check(requestBody, chatId);
     }
 
     public void chatReplyKeyboardMarkup(Long chatId, String text) {
@@ -53,7 +73,7 @@ public class SendService {
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("chat_id", chatId);
-        requestBody.put("text", text);
+        requestBody.put("text", "\uD83E\uDD16:\t\n" + text);
 
         Map<String, Object> keyboardButton1 = new HashMap<>();
         keyboardButton1.put("text", "\uD83D\uDED1 stop");

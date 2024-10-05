@@ -42,7 +42,7 @@ public class ChatService {
             return;
         }
         if (message.getText().equals("/start") || referralService.isReferral(message.getText())) {
-            send.controlReplyKeyboardMarkup(user.getChatId(), "\uD83E\uDD16:\t\n" +
+            send.controlReplyKeyboardMarkup(user.getChatId(),
                     "Siz hali ham suhbat jarayonidasiz, - 'Qandaysiz!' deb yozing'");
             return;
         }

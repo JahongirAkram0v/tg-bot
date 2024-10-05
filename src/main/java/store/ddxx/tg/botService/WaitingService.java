@@ -24,7 +24,7 @@ public class WaitingService {
         }
         user.setClickedTime(LocalTime.now());
         userService.save(user);
-        send.controlReplyKeyboardMarkup(user.getChatId(), "\uD83E\uDD16:\t\n" +
+        send.controlReplyKeyboardMarkup(user.getChatId(),
                 "Kutib turing. Suhbat boshlansa xabar beriladi");
     }
 }
