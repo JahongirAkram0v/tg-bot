@@ -17,7 +17,8 @@ public class WaitingService {
     private final UserService userService;
 
     public void waiting(User user, Message message) {
-        if (!(message.getText().equals("⚡️ chat") || message.getText().equals("/start")) && user.getClickedTime().isAfter(LocalTime.now().minusSeconds(15))) {
+        if (!(message.getText().equals("⚡️ chat") || message.getText().equals("/start"))
+                && user.getClickedTime().isAfter(LocalTime.now().minusSeconds(15))) {
             deleteService.deleteMessage(message);
             return;
         }

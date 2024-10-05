@@ -3,10 +3,13 @@ package store.ddxx.tg.botService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import store.ddxx.tg.model.User;
 import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.service.ActiveChatUsersService;
 import store.ddxx.tg.service.UserService;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -23,14 +26,15 @@ public class ChatService {
 
         if (message.getEntities() != null) {
 
-            message.getEntities()
-                    .stream()
-                    .filter(entity -> "url".equals(entity.getType()) || "mention".equals(entity.getType()))
-                    .findFirst()
-                    .ifPresent(entity -> {
-                        deleteService.deleteMessage(message);
-                        send.botSendTextMessage(user.getChatId(), "Siz bunday xabar yubora olmaysiz.");
-                    });
+            List<MessageEntity> entities = message.getEntities();
+
+            for (MessageEntity entity : entities) {
+                if ("url".equals(entity.getType()) || "mention".equals(entity.getType())){
+                    deleteService.deleteMessage(message);
+                    send.botSendTextMessage(user.getChatId(), "Siz bunday xabar yubora olmaysiz.");
+                    return;
+                }
+            }
         }
 
         if (botCommandsService.isBotCommand(message.getText())) {

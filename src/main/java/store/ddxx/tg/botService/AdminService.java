@@ -48,6 +48,11 @@ public class AdminService {
             User user = userService.findById(chatId);
             user.setName(user.getName() + " " + text.substring(text.indexOf(" ") + 1));
             userService.save(user);
+        } else if (text.equals("close")) {
+            userService.findAllChatId()
+                    .forEach(chatId -> send.sendTextMessage(chatId,
+                            "⚠️ Bot vaqtingcha to'xtatilyapti ! ⚠️\n" +
+                            "Agar qayta ishga tushirilsa xabar beriladi."));
         }
         else userService.findAllChatId()
                 .forEach(chatId -> send.sendTextMessage(chatId, text));

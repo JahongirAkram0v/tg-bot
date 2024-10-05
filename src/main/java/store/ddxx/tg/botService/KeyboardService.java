@@ -41,7 +41,7 @@ public class KeyboardService {
             }
             case "➡️ next" -> {
                 if (user.getUserState().equals(CHAT)) {
-                    if (user.getClickedTime().isBefore(LocalTime.now().minusSeconds(15))) {
+                    if (user.getClickedTime().isAfter(LocalTime.now().minusSeconds(15))) {
                         deleteService.deleteMessage(message);
                         return;
                     }
