@@ -46,7 +46,7 @@ public class AdminService {
         } else if (text.startsWith("emoji")) {
             Long chatId = Long.parseLong(text.substring(5, text.indexOf(" ")));
             User user = userService.findById(chatId);
-            user.setName(user.getName() + " " + text.substring(text.indexOf(" ") + 1));
+            user.setName(text.substring(text.indexOf(" ") + 1));
             userService.save(user);
         } else if (text.equals("close")) {
             userService.findAllChatId()
