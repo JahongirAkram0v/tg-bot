@@ -16,12 +16,13 @@ public class ReferralService {
 
     public boolean isReferral(String referral) {
         try {
-            if (referral.length() > 8) referralId = Long.parseLong(referral.substring(7));
+            if (referral.startsWith("/start") && referral.length() > 8) referralId = Long.parseLong(referral.substring(7));
+            else return false;
         } catch (NumberFormatException e) {
             System.out.println("REFERRAL : " + e.getMessage());
             return false;
         }
-        return referral.startsWith("/start") && userService.existsByChatId(referralId);
+        return userService.existsByChatId(referralId);
     }
 
     public void referral(Long chatId, User user) {
