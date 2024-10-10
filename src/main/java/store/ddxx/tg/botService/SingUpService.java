@@ -34,7 +34,7 @@ public class SingUpService {
         String text = """
                 Assalomu alaykum botga xush kelibsiz.
 
-                Iltimos asl ismingizni kiriting.""";
+                Iltimos ismingizni kiriting. [A-Z, a-z]""";
 
         send.botSendTextMessage(user.getChatId(), text);
     }
