@@ -24,9 +24,11 @@ public class SendService {
         checkUserService.check(requestBody, chatId);
     }
 
-    public void sendVideo(String chatId, String videoFileId) {
+    public void sendSpecialVideo(String chatId, String videoFileId) {
         RestTemplate restTemplate = new RestTemplate();
-        String caption = "Yuqoridagi video orqali siz botdan foydalanishni yaxshiroq tushinib olasiz";
+        String caption = "\uD83E\uDD16:\t\n" +
+                "Yuqoridagi video orqali siz botdan foydalanishni yaxshiroq tushinib olasiz.\n" +
+                "@suhbat_topar_bot";
         
         String url = dotenv.get("BASE_URL") + dotenv.get("TELEGRAM_BOT_TOKEN")
                 + "/sendVideo?chat_id=" + chatId + "&video=" + videoFileId

@@ -41,7 +41,7 @@ public class SingUpService {
 
         if (videoFileIdService.find() != null) {
             VideoFileId videoFileId = videoFileIdService.find();
-            send.sendVideo(user.getChatId().toString(), videoFileId.getFileId());
+            send.sendSpecialVideo(user.getChatId().toString(), videoFileId.getFileId());
         }
         send.botSendTextMessage(user.getChatId(), text);
     }
