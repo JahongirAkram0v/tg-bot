@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import store.ddxx.tg.model.User;
 import store.ddxx.tg.model.UserState;
+import store.ddxx.tg.model.VideoFileId;
 import store.ddxx.tg.service.UserService;
+import store.ddxx.tg.service.VideoFileIdService;
 
 import java.util.stream.Collectors;
 
@@ -18,6 +20,7 @@ public class SingUpService {
     private final ReferralService referralService;
     private final DeleteService deleteService;
     private final SendService send;
+    private final VideoFileIdService videoFileIdService;
 
     public void singUp(User user, Message message) {
 
@@ -36,6 +39,10 @@ public class SingUpService {
 
                 Iltimos ismingizni kiriting. [A-Z, a-z]""";
 
+        if (videoFileIdService.find() != null) {
+            VideoFileId videoFileId = videoFileIdService.find();
+            send.sendVideo(user.getChatId().toString(), videoFileId.getFileId());
+        }
         send.botSendTextMessage(user.getChatId(), text);
     }
 

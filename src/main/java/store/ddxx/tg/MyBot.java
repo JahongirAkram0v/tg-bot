@@ -33,7 +33,7 @@ public class MyBot extends TelegramWebhookBot {
     private final AdminService adminService;
     private final KeyboardService keyboardService;
     private final DeleteService deleteMessage;
-//    private final EditNameService editNameService;
+    //    private final EditNameService editNameService;
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
@@ -47,14 +47,19 @@ public class MyBot extends TelegramWebhookBot {
         Long chatId = message.getChatId();
         String text = message.getText();
 
+        User user = userService.findById(chatId);
+
+        if (user.getUserState().equals(ADMIN) && message.hasVideo()) {
+            adminService.setVideo(message);
+            return null;
+        }
+
         if (text == null) {
             deleteMessage.deleteMessage(message);
             return null;
         }
 
         text = text.trim();
-
-        User user = userService.findById(chatId);
 
         if (user.getChatId() == null && referralService.isReferral(text)) {
             referralService.referral(chatId, user);

@@ -2,10 +2,13 @@ package store.ddxx.tg.botService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import store.ddxx.tg.model.ActiveChatUsers;
 import store.ddxx.tg.model.User;
+import store.ddxx.tg.model.VideoFileId;
 import store.ddxx.tg.service.ActiveChatUsersService;
 import store.ddxx.tg.service.UserService;
+import store.ddxx.tg.service.VideoFileIdService;
 
 import static store.ddxx.tg.model.UserState.*;
 
@@ -16,6 +19,7 @@ public class AdminService {
     private final SendService send;
     private final UserService userService;
     private final ActiveChatUsersService activeChatUsersService;
+    private final VideoFileIdService videoFileIdService;
 
     public void sendText(String text){
 
@@ -53,9 +57,20 @@ public class AdminService {
                     .forEach(chatId -> send.sendTextMessage(chatId,
                             "⚠️ Bot vaqtingcha to'xtatilyapti ! ⚠️\n" +
                             "Agar qayta ishga tushirilsa xabar beriladi."));
+        } else if (text.startsWith("set")) {
+            System.out.println(text.substring(3));
+            String fileId = text.substring(3);
+            videoFileIdService.deleteAll();
+            VideoFileId videoFileId = new VideoFileId();
+            videoFileId.setFileId(fileId);
+            videoFileIdService.save(videoFileId);
         }
         else userService.findAllChatId()
                 .forEach(chatId -> send.sendTextMessage(chatId, text));
+    }
+
+    public void setVideo(Message message) {
+        send.botSendTextMessage(message.getChatId(), message.getVideo().getFileId());
     }
 
 }

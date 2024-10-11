@@ -1,7 +1,10 @@
 package store.ddxx.tg.botService;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -9,6 +12,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SendService {
 
+    private final Dotenv dotenv = Dotenv.load();
     private final CheckUserService checkUserService;
 
     public void sendTextMessage(Long chatId, String text) {
@@ -19,6 +23,23 @@ public class SendService {
 
         checkUserService.check(requestBody, chatId);
     }
+
+    public void sendVideo(String chatId, String videoFileId) {
+        RestTemplate restTemplate = new RestTemplate();
+        String caption = "Yuqoridagi video orqali siz botdan foydalanishni yaxshiroq tushinib olasiz";
+        
+        String url = dotenv.get("BASE_URL") + dotenv.get("TELEGRAM_BOT_TOKEN")
+                + "/sendVideo?chat_id=" + chatId + "&video=" + videoFileId
+                + "&caption=" + caption;
+
+        try {
+            restTemplate.getForEntity(url, String.class);
+        } catch (RestClientException e) {
+            System.out.println("Error sending video: " + e.getMessage());
+        }
+    }
+
+
 
     public void botSendTextMessage(Long chatId, String text) {
         sendTextMessage(chatId, "\uD83E\uDD16:\t\n" + text);
