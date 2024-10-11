@@ -58,7 +58,6 @@ public class AdminService {
                             "⚠️ Bot vaqtingcha to'xtatilyapti ! ⚠️\n" +
                             "Agar qayta ishga tushirilsa xabar beriladi."));
         } else if (text.startsWith("set")) {
-            System.out.println(text.substring(3));
             String fileId = text.substring(3);
             videoFileIdService.deleteAll();
             VideoFileId videoFileId = new VideoFileId();
