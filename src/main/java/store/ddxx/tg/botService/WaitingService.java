@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import store.ddxx.tg.model.User;
 import store.ddxx.tg.service.UserService;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -18,11 +18,11 @@ public class WaitingService {
 
     public void waiting(User user, Message message) {
         if (!(message.getText().equals("⚡️ chat") || message.getText().equals("/start"))
-                && user.getClickedTime().isAfter(LocalTime.now().minusSeconds(15))) {
+                && user.getClickedTime().isAfter(LocalDateTime.now().minusSeconds(15))) {
             deleteService.deleteMessage(message);
             return;
         }
-        user.setClickedTime(LocalTime.now());
+        user.setClickedTime(LocalDateTime.now());
         userService.save(user);
         send.controlReplyKeyboardMarkup(user.getChatId(),
                 "Kutib turing. Suhbat boshlansa xabar beriladi");

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +16,7 @@ public class User {
     @Id
     private Long chatId;
     private Long token = 0L;
-    private LocalTime clickedTime = LocalTime.now();
+    private LocalDateTime clickedTime = LocalDateTime.now();
     @Column(length = 20)
     private String name;
     @Column(length = 15)

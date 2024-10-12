@@ -8,7 +8,7 @@ import store.ddxx.tg.model.UserState;
 import store.ddxx.tg.service.ActiveChatUsersService;
 import store.ddxx.tg.service.UserService;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,11 +41,11 @@ public class KeyboardService {
             }
             case "➡️ next" -> {
                 if (user.getUserState().equals(CHAT)) {
-                    if (user.getClickedTime().isAfter(LocalTime.now().minusSeconds(15))) {
+                    if (user.getClickedTime().isAfter(LocalDateTime.now().minusSeconds(15))) {
                         deleteService.deleteMessage(message);
                         return;
                     }
-                    user.setClickedTime(LocalTime.now());
+                    user.setClickedTime(LocalDateTime.now());
                     userService.save(user);
                     setController(user, START_CHAT, "Suhbatdosh almashtirildi, Suhbatni bo'shlash uchun istalgan tugmani bosing.");
                     send.botSendTextMessage(user.getChatId(), "Suhbat boshlansa xabar beriladi");
