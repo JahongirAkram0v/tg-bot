@@ -25,4 +25,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     @Query("SELECT chatId FROM _user")
     List<Long> findAllChatId();
+
+    @Query("SELECT u.chatId FROM _user u WHERE u.userState = 'NEXT'")
+    List<Long> findChatIdByUserState();
 }

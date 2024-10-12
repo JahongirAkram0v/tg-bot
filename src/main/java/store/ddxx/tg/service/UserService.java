@@ -34,4 +34,6 @@ public class UserService {
     public Long findTokenByUserId(Long chatId) {return repo.findTokenByUserId(chatId);}
 
     public List<Long> findAllChatId() {return repo.findAllChatId();}
+
+    public List<Long> findChatIdByUserState() {return repo.findChatIdByUserState();}
 }

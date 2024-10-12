@@ -70,7 +70,7 @@ public class KeyboardService {
         User waitingUser = userService.findById(activeChatUsersId);
 
         if (!waitingUser.getUserState().equals(ACTIVATE)) {
-            waitingUser.setUserState(START_CHAT);
+            waitingUser.setUserState(NEXT);
         }
 
         user.setUserState(userState);
