@@ -63,6 +63,17 @@ public class AdminService {
             VideoFileId videoFileId = new VideoFileId();
             videoFileId.setFileId(fileId);
             videoFileIdService.save(videoFileId);
+        } else if (text.equals("stop")) {
+            userService.findAllChatId()
+                    .forEach(chatId -> {
+                        User user = userService.findById(chatId);
+                        if (user.getUserState().equals(CHAT)) {
+                            activeChatUsersService.deleteByUserId1OrUserId2(chatId);
+                        }
+                        user.setUserState(ACTIVATE);
+                        userService.save(user);
+                        send.chatReplyKeyboardMarkup(chatId, "Iltimos qayta boshlash uchun ⚡️ chat ni bosing.");
+                    });
         }
         else userService.findAllChatId()
                 .forEach(chatId -> send.sendTextMessage(chatId, text));
