@@ -17,6 +17,8 @@ public class StartChatService {
 
     public void startChat(User user) {
 
+        changer = userService.findFirstChatIdByUserState().isEmpty();
+
         if (changer && userService.findChatIdByUserState().size() >= 2) {
             Long waitingUserId = userService.findChatIdByUserState().getFirst();
             User waitingUser = userService.findById(waitingUserId);
@@ -27,10 +29,8 @@ public class StartChatService {
 
         if (changer) {
             user.setUserState(UserState.WAITING);
-            changer = false;
         } else {
             user.setUserState(UserState.SELECTOR);
-            changer = true;
         }
         userService.save(user);
     }

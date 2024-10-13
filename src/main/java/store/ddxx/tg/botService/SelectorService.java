@@ -19,7 +19,7 @@ public class SelectorService {
 
     public void selector(User user) {
 
-        Long waitingUserId = userService.findFirstChatIdByUserState();
+        Long waitingUserId = userService.findFirstChatIdByUserState().getFirst();
 
         send.controlReplyKeyboardMarkup(waitingUserId,
                 "Suhbatni boshlashingiz mumkin.\n - 'Salom' deb yozing.");
