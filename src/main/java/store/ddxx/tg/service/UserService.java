@@ -25,7 +25,7 @@ public class UserService {
         return user.getChatId() != null && user.getName() != null;
     }
 
-    public Long findFirstChatIdByUserState() {return repo.findFirstChatIdByUserState();}
+    public Long findFirstChatIdByUserState() {return repo.findFirstChatIdByUserState().getFirst();}
 
     public boolean existsByChatId(Long chatId) {return repo.existsByChatId(chatId);}
 

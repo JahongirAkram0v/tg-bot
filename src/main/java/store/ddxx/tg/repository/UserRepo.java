@@ -12,8 +12,8 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     boolean existsByChatId(Long chatId);
 
-    @Query("SELECT u.chatId FROM _user u WHERE u.userState = 'WAITING' LIMIT 1")
-    Long findFirstChatIdByUserState();
+    @Query("SELECT u.chatId FROM _user u WHERE u.userState = 'WAITING'")
+    List<Long> findFirstChatIdByUserState();
 
     @Query("SELECT COUNT(*) FROM _user")
     Long findCountUsers();
