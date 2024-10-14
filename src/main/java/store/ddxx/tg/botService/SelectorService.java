@@ -26,7 +26,7 @@ public class SelectorService {
 
         User waitingUser = userService.findById(waitingUserId);
 
-        if (waitingUser.getUserState().equals(UserState.ACTIVATE)) {
+        if (waitingUser.getUserState().equals(UserState.BLOCK)) {
             startChatService.setChanger(true);
             user.setUserState(UserState.START_CHAT);
             userService.save(user);
