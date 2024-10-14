@@ -34,6 +34,7 @@ public class MyBot extends TelegramWebhookBot {
     private final KeyboardService keyboardService;
     private final DeleteService deleteMessage;
     private final NextService nextService;
+    private final BlockService blockService;
     //    private final EditNameService editNameService;
 
     @Override
@@ -81,6 +82,11 @@ public class MyBot extends TelegramWebhookBot {
 
         if (keyboardService.isKeyboard(text)) {
             keyboardService.keyboard(user, message);
+        }
+
+        if (user.getUserState().equals(BLOCK)) {
+            blockService.block(user);
+            return null;
         }
 
         if (user.getUserState().equals(ACTIVATE)) {

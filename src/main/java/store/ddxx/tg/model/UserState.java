@@ -5,6 +5,7 @@ public enum UserState {
     START,
     NAME,
     ACTIVATE,
+    BLOCK,
     START_CHAT,
     NEXT,
     WAITING,

@@ -31,11 +31,9 @@ public class CheckUserService {
                 System.out.println("BLOCKLAGAN : " + chatId);
                 User user = userService.findById(chatId);
 
-                if (!user.getUserState().equals(UserState.ACTIVATE)) {
-                    user.setUserState(UserState.ACTIVATE);
-                    userService.save(user);
-                    System.out.println("User ACTIVATE holatiga o'tkazildi.");
-                }
+                user.setUserState(UserState.BLOCK);
+                userService.save(user);
+                System.out.println("User ACTIVATE holatiga o'tkazildi.");
 
             }
             System.out.println(e.getMessage());
