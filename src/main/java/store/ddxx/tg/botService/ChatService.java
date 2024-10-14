@@ -53,7 +53,7 @@ public class ChatService {
         }
         send.activeUsersSendTextMessage(activeChatUsersId, text, user.getName());
 
-        if (userService.findById(activeChatUsersId).getUserState().equals(UserState.ACTIVATE)) {
+        if (userService.findById(activeChatUsersId).getUserState().equals(UserState.BLOCK)) {
             user.setUserState(UserState.START_CHAT);
             userService.save(user);
             activeChatUsersService.deleteByUserId1OrUserId2(user.getChatId());

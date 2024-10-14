@@ -33,7 +33,7 @@ public class CheckUserService {
 
                 user.setUserState(UserState.BLOCK);
                 userService.save(user);
-                System.out.println("User ACTIVATE holatiga o'tkazildi.");
+                System.out.println("User BLOCK holatiga o'tkazildi.");
 
             }
             System.out.println(e.getMessage());
